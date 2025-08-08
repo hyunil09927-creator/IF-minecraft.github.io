@@ -54,12 +54,7 @@
                 .then(data => {
                     if (data.online) {
                         let text = `✅ 서버 상태: 온라인<br>`;
-                        text += `👥 접속자 수: ${data.players.online} / ${data.players.max}<br>`;
-                        if (data.players.list && data.players.list.length > 0) {
-                            text += `📋 접속자 목록: ${data.players.list.join(', ')}`;
-                        } else {
-                            text += `📋 현재 접속자 없음`;
-                        }
+                        text += `👥 접속자 수: ${data.players.online} / ${data.players.max}`;
                         statusElement.innerHTML = text;
                     } else {
                         statusElement.innerHTML = '❌ 서버 상태: 오프라인';
