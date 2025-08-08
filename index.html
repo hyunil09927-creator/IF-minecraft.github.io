@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>서버 접속자 확인</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #4caf50;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #status {
+            margin-top: 30px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎮 마인크래프트 접속자 보기</h1>
+    <p>서버 주소: <strong>34.64.47.186</strong></p>
+    <button onclick="checkServer()">접속자 새로고침</button>
+    <div id="status">서버 상태를 확인하려면 버튼을 누르세요.</div>
+
+    <script>
+        function checkServer() {
+            const apiUrl = "https://api.mcsrvstat.us/3/34.64.47.186";
+            const statusElement = document.getElementById('status');
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.online) {
+                        let text = `✅ 서버 상태: 온라인<br>`;
+                        text += `👥 접속자 수: ${data.players.online} / ${data.players.max}<br>`;
+                        if (data.players.list && data.players.list.length > 0) {
+                            text += `📋 접속자 목록: ${data.players.list.join(', ')}`;
+                        } else {
+                            text += `📋 현재 접속자 없음`;
+                        }
+                        statusElement.innerHTML = text;
+                    } else {
+                        statusElement.innerHTML = '❌ 서버 상태: 오프라인';
+                    }
+                })
+                .catch(error => {
+                    console.error('오류:', error);
+                    statusElement.innerHTML = '⚠️ 서버 정보를 불러오는 중 오류 발생';
+                });
+        }
+    </script>
+</body>
+</html>
